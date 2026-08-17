@@ -25,3 +25,19 @@ jobs:
         run: |
           echo "Build completed successfully"
           echo "CI pipeline executed successfully"
+
+      - name: Send Slack notification
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            MESSAGE="✅ CI Pipeline SUCCESS - devops-webapp"
+          else
+            MESSAGE="❌ CI Pipeline FAILED - devops-webapp"
+          fi
+
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            --data "{\"text\":\"$MESSAGE\"}" \
+            "$SLACK_WEBHOOK_URL"
