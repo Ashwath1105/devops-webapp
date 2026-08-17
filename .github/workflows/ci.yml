@@ -1,0 +1,27 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify HTML file
+        run: |
+          test -f index.html
+          echo "index.html found successfully"
+
+      - name: Generate build log
+        run: |
+          echo "Build completed successfully"
+          echo "CI pipeline executed successfully"
